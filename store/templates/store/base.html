@@ -2,39 +2,67 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Marketplace</title>
 
-    <!-- Tailwind CSS (Play CDN) -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tipografía moderna (Inter) muy usada en interfaces actuales -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
 </head>
-<body class="bg-white">
+<!-- Fondo sutilmente gris azulado (slate-50) en lugar de blanco puro para reducir fatiga visual -->
+<body class="bg-slate-50 antialiased text-slate-800">
 
-<nav class="bg-gray-900">
-  <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-    <a class="text-xl font-bold text-white no-underline" href="/">Marketplace</a>
+<!-- Navbar: Sticky (se queda arriba) + Glassmorphism (transparencia y desenfoque) -->
+<nav class="sticky top-0 z-50 bg-slate-900/85 backdrop-blur-lg border-b border-white/10 shadow-sm">
+  <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+    
+    <!-- Logo: Texto con gradiente (muy moderno) en lugar de texto plano -->
+    <a class="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 tracking-tight hover:opacity-80 transition-opacity" href="/">
+        Marketplace
+    </a>
 
-    <div class="flex items-center space-x-3">
+    <div class="flex items-center space-x-1 md:space-x-3">
+      <!-- Botones Ghost (sin borde, cambian el fondo sutilmente al pasar el mouse) -->
       <a href="{% url 'cart_detail' %}"
-        class="border border-gray-300 text-gray-300 hover:bg-white hover:text-gray-900 px-3 py-1.5 rounded text-sm transition-colors">
+         class="text-slate-300 hover:text-white px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:bg-white/10">
            Carrito
       </a>
+
       {% if user.is_authenticated and user.is_seller %}
-        <a href="{% url 'dashboard' %}" class="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-medium px-3 py-1.5 rounded text-sm transition-colors">Dashboard</a>
+        <!-- Dashboard: Acento neón/menta con sombra coloreada flotante -->
+        <a href="{% url 'dashboard' %}" 
+           class="bg-gradient-to-r from-teal-400 to-emerald-500 hover:from-teal-500 hover:to-emerald-600 text-slate-900 px-5 py-2 rounded-full text-sm font-bold shadow-lg shadow-teal-500/25 transition-all duration-300 hover:-translate-y-0.5">
+           Dashboard
+        </a>
       {% endif %}
+
       {% if user.is_authenticated %}
-        <span class="text-white">Hola {{ user.username }}</span>
-        <a href="{% url 'logout' %}" class="border border-gray-300 text-gray-300 hover:bg-white hover:text-gray-900 px-3 py-1.5 rounded text-sm transition-colors">Logout</a>
+        <span class="text-slate-300 text-sm font-medium hidden md:inline-block px-2">Hola, {{ user.username }}</span>
+        <a href="{% url 'logout' %}" class="text-slate-300 hover:text-white px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:bg-white/10">
+            Logout
+        </a>
       {% else %}
-        <a href="{% url 'login' %}" class="border border-gray-300 text-gray-300 hover:bg-white hover:text-gray-900 px-3 py-1.5 rounded text-sm transition-colors">Login</a>
-        <a href="{% url 'register' %}" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded text-sm transition-colors">Registro</a>
+        <a href="{% url 'login' %}" class="text-slate-300 hover:text-white px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:bg-white/10">
+            Login
+        </a>
+        <!-- Registro: Gradiente Índigo-Púrpura, elevación al hacer hover -->
+        <a href="{% url 'register' %}" class="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white px-6 py-2 rounded-full text-sm font-medium shadow-lg shadow-indigo-500/25 transition-all duration-300 hover:-translate-y-0.5">
+            Registro
+        </a>
       {% endif %}
     </div>
   </div>
 </nav>
 
-<div class="container mx-auto px-4 mt-6">
+<!-- Usar la etiqueta <main> es mejor semánticamente. Aumentamos el padding superior (py-10) -->
+<main class="container mx-auto px-6 py-10 md:py-12">
     {% block content %}{% endblock %}
-</div>
+</main>
 
 </body>
 </html>

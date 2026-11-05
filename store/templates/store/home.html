@@ -1,114 +1,154 @@
 {% extends 'store/base.html' %}
 
 {% block content %}
-<!-- Buscador usando CSS Grid en lugar de Flexbox (Bootstrap row) -->
-<form method="GET" class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-8">
 
-    <div class="md:col-span-5">
-        <input type="text"
-               name="q"
-               class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-               placeholder="Buscar productos...">
-    </div>
+<!-- Buscador Moderno: Efecto Glassmorphism y bordes súper redondeados -->
+<div class="bg-white/60 backdrop-blur-xl p-3 md:p-4 rounded-[2rem] shadow-lg shadow-slate-200/50 border border-white/80 mb-12">
+    <form method="GET" class="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
 
-    <div class="md:col-span-4">
-        <select name="category"
-                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
-            <option value="">Todas las categorías</option>
-            {% for category in categories %}
-                <option value="{{ category.id }}">
-                    {{ category.name }}
-                </option>
-            {% endfor %}
-        </select>
-    </div>
+        <!-- Input de Búsqueda tipo Píldora -->
+        <div class="md:col-span-5 relative">
+            <!-- Icono de lupa SVG -->
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <svg class="h-5 w-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+            </div>
+            <input type="text"
+                   name="q"
+                   class="w-full pl-11 pr-4 py-3 bg-slate-50/50 border border-slate-200 rounded-full focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all text-slate-700 placeholder-slate-400"
+                   placeholder="¿Qué estás buscando?">
+        </div>
 
-    <div class="md:col-span-3">
-        <button type="submit" class="w-full bg-gray-900 hover:bg-gray-800 text-white font-semibold py-2 px-4 rounded-md transition-colors">
-            Buscar
-        </button>
-    </div>
+        <!-- Select tipo Píldora -->
+        <div class="md:col-span-4 relative">
+            <select name="category"
+                    class="w-full px-5 py-3 bg-slate-50/50 border border-slate-200 rounded-full focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all text-slate-700 appearance-none">
+                <option value="">Todas las categorías</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}">{{ category.name }}</option>
+                {% endfor %}
+            </select>
+            <!-- Icono personalizado para el select -->
+            <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                <svg class="h-4 w-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+            </div>
+        </div>
 
-</form>
+        <!-- Botón de Búsqueda con Gradiente -->
+        <div class="md:col-span-3">
+            <button type="submit" class="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-full shadow-md shadow-indigo-500/25 transition-all hover:-translate-y-0.5">
+                Explorar
+            </button>
+        </div>
 
-<div class="py-10">
-    <h2 class="text-3xl font-bold text-gray-900 mb-8">Nuestros Productos</h2>
+    </form>
+</div>
+
+<div class="py-4">
+    <h2 class="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-slate-800 to-slate-500 mb-10 tracking-tight">
+        Descubre Productos
+    </h2>
 
     <!-- Grid de productos -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {% for product in products %}
         
-        <!-- Tarjeta (Card) -->
-        <div class="flex flex-col h-full bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden hover:-translate-y-1 hover:shadow-lg transition-all duration-300 ease-in-out">
+        <!-- Tarjeta (Card) Moderna: hover de grupo para animar la imagen -->
+        <div class="group flex flex-col h-full bg-white rounded-3xl border border-slate-100 shadow-xl shadow-slate-200/40 overflow-hidden hover:-translate-y-2 hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-300 ease-out">
             
-            {% if product.image %}
-                <!-- h-64 equivale a 256px, muy cercano a tus 250px originales -->
-                <img src="{{ product.image.url }}" class="w-full h-64 object-cover" alt="{{ product.name }}">
-            {% else %}
-                <div class="w-full h-64 bg-gray-100 flex items-center justify-center">
-                    <span class="text-gray-400 font-medium">Sin imagen</span>
-                </div>
-            {% endif %}
+            <!-- Contenedor de Imagen con efecto Zoom -->
+            <div class="relative overflow-hidden aspect-[4/3] bg-slate-50">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-out" alt="{{ product.name }}">
+                {% else %}
+                    <div class="w-full h-full flex flex-col items-center justify-center text-slate-300">
+                        <svg class="w-12 h-12 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        <span class="text-sm font-medium">Sin imagen</span>
+                    </div>
+                {% endif %}
+                
+                <!-- Overlay degradado en la parte inferior de la imagen para que resalte si ponemos texto sobre ella -->
+                <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </div>
 
             <!-- Cuerpo de la Tarjeta -->
-            <div class="flex flex-col flex-grow p-5">
-                <div class="mb-3 flex flex-wrap gap-2">
+            <div class="flex flex-col flex-grow p-6">
+                <!-- Badges / Categorías -->
+                <div class="mb-4 flex flex-wrap gap-2">
                     {% for cat in product.categories.all %}
-                        <span class="inline-block px-3 py-1 bg-cyan-100 text-cyan-800 text-xs font-semibold rounded-full">
+                        <span class="inline-flex items-center px-3 py-1 bg-indigo-50 text-indigo-600 text-xs font-bold uppercase tracking-wider rounded-full">
                             {{ cat.name }}
                         </span>
                     {% endfor %}
                 </div>
 
-                <h5 class="text-lg font-semibold text-gray-900 mb-2">{{ product.name }}</h5>
+                <h5 class="text-xl font-bold text-slate-800 mb-2 leading-tight">{{ product.name }}</h5>
                 
-                <!-- flex-grow empuja el bloque de precio hacia abajo si la descripción es corta -->
-                <p class="text-gray-600 text-sm flex-grow mb-4">
+                <p class="text-slate-500 text-sm flex-grow mb-6 leading-relaxed">
                     {{ product.description|truncatechars:100 }}
                 </p>
 
-                <div class="flex justify-between items-center mt-auto">
-                    <span class="text-xl font-bold text-blue-600">${{ product.price }}</span>
-                    <small class="text-gray-500 text-xs font-medium">Por: {{ product.owner.username }}</small>
+                <!-- Precio y Autor -->
+                <div class="flex justify-between items-end mt-auto pt-4 border-t border-slate-100">
+                    <div>
+                        <span class="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-1">Precio</span>
+                        <!-- Precio con gradiente -->
+                        <span class="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-purple-600">
+                            ${{ product.price }}
+                        </span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <!-- Avatar simulado o icono -->
+                        <div class="w-6 h-6 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-500">
+                            {{ product.owner.username|make_list|first|upper }}
+                        </div>
+                        <small class="text-slate-500 font-medium">{{ product.owner.username }}</small>
+                    </div>
                 </div>
             </div>
 
-            <!-- Footer de la Tarjeta -->
-            <div class="p-5 pt-0 flex flex-col gap-3">
+            <!-- Footer de la Tarjeta (Botones) -->
+            <div class="p-6 pt-0 flex flex-col gap-3">
                 {% if user.is_authenticated %}
-                    <a href="{% url 'add_to_cart' product.id %}" class="w-full text-center px-4 py-2 border border-gray-900 text-gray-900 font-medium rounded-full hover:bg-gray-900 hover:text-white transition-colors">
+                    <a href="{% url 'add_to_cart' product.id %}" class="w-full text-center px-6 py-3 bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded-full shadow-lg shadow-slate-900/20 transition-all hover:-translate-y-0.5">
                         Agregar al carrito
                     </a>
                 {% endif %}
-                <a href="#" class="w-full text-center px-4 py-2 border border-gray-900 text-gray-900 font-medium rounded-full hover:bg-gray-900 hover:text-white transition-colors">
+                <a href="#" class="w-full text-center px-6 py-3 bg-slate-50 hover:bg-slate-100 text-slate-700 font-semibold rounded-full transition-colors">
                     Ver Detalles
                 </a>
             </div>
             
         </div>
         {% empty %}
-        <!-- Estado Vacío -->
-        <div class="col-span-full text-center py-16">
-            <p class="text-xl text-gray-500">No hay productos disponibles en este momento.</p>
+        <!-- Estado Vacío Mejorado -->
+        <div class="col-span-full flex flex-col items-center justify-center py-20 bg-white/50 backdrop-blur-sm rounded-[2rem] border border-dashed border-slate-300">
+            <svg class="w-16 h-16 text-slate-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg>
+            <h3 class="text-xl font-bold text-slate-700 mb-2">No hay productos disponibles</h3>
+            <p class="text-slate-500 text-center max-w-md">Parece que no hemos encontrado lo que buscas. Intenta cambiar los filtros de búsqueda o regresa más tarde.</p>
         </div>
         {% endfor %}
     </div>
 </div>
 
-<!-- Paginación -->
-<nav class="mt-10 mb-8" aria-label="Navegación de páginas">
-    <ul class="flex justify-center items-center space-x-2">
+<!-- Paginación Moderna (Circulares/Píldoras) -->
+<nav class="mt-12 mb-8 flex justify-center" aria-label="Navegación de páginas">
+    <ul class="flex items-center gap-2 p-2 bg-white rounded-full shadow-sm border border-slate-100">
         {% if page_obj.has_previous %}
             <li>
                 <a href="?page={{ page_obj.previous_page_number }}" 
-                   class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors">
-                   Anterior
+                   class="flex items-center justify-center px-4 py-2 text-sm font-medium text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-colors">
+                   &larr; Anterior
                 </a>
             </li>
         {% endif %}
 
         <li>
-            <span class="px-4 py-2 bg-blue-600 border border-blue-600 text-white font-medium rounded-md shadow-sm">
+            <!-- Página activa con gradiente -->
+            <span class="flex items-center justify-center w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-bold rounded-full shadow-md shadow-indigo-500/30">
                 {{ page_obj.number }}
             </span>
         </li>
@@ -116,8 +156,8 @@
         {% if page_obj.has_next %}
             <li>
                 <a href="?page={{ page_obj.next_page_number }}" 
-                   class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors">
-                   Siguiente
+                   class="flex items-center justify-center px-4 py-2 text-sm font-medium text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-colors">
+                   Siguiente &rarr;
                 </a>
             </li>
         {% endif %}
