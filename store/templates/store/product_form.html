@@ -1,14 +1,56 @@
 {% extends 'store/base.html' %}
 
 {% block content %}
+<!-- Contenedor centrado con ancho máximo moderado (ideal para formularios de creación) -->
+<div class="max-w-2xl mx-auto mt-8 p-6 lg:p-8 bg-white border border-gray-200 rounded-lg shadow-sm">
+    
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-800">Producto</h2>
+        <!-- Enlace de retroceso por si el usuario se arrepiente -->
+        <a href="{% url 'dashboard' %}" class="text-sm text-gray-500 hover:text-gray-800 transition-colors">
+            &larr; Volver al Dashboard
+        </a>
+    </div>
 
-<h2>Producto</h2>
+    <!-- 
+      Usamos la misma técnica de selectores arbitrarios que en el registro, 
+      pero ampliados para soportar textareas y campos de archivo (file inputs).
+    -->
+    <form method="POST" enctype="multipart/form-data" class="
+        [&>p]:mb-5 
+        [&>p>label]:block [&>p>label]:text-sm [&>p>label]:font-semibold [&>p>label]:text-gray-700 [&>p>label]:mb-1
+        
+        /* Estilos generales para inputs de texto */
+        [&>p>input]:w-full [&>p>input]:px-4 [&>p>input]:py-2 [&>p>input]:border [&>p>input]:border-gray-300 [&>p>input]:rounded-md [&>p>input]:focus:outline-none [&>p>input]:focus:ring-2 [&>p>input]:focus:ring-blue-500 [&>p>input]:transition-colors
+        
+        [&>p>input[type=checkbox]]:w-auto [&>p>input[type=checkbox]]:mr-2 [&>p>input[type=checkbox]]:accent-blue-600
+        [&>p>input[type=file]]:p-0 [&>p>input[type=file]]:border-0 [&>p>input[type=file]]:focus:ring-0 [&>p>input[type=file]]:text-gray-600
+        
+        /* Estilos para áreas de texto (ej. descripción) y selects (ej. categoría) */
+        [&>p>textarea]:w-full [&>p>textarea]:px-4 [&>p>textarea]:py-2 [&>p>textarea]:border [&>p>textarea]:border-gray-300 [&>p>textarea]:rounded-md [&>p>textarea]:focus:outline-none [&>p>textarea]:focus:ring-2 [&>p>textarea]:focus:ring-blue-500 [&>p>textarea]:transition-colors
+        [&>p>select]:w-full [&>p>select]:px-4 [&>p>select]:py-2 [&>p>select]:border [&>p>select]:border-gray-300 [&>p>select]:rounded-md [&>p>select]:focus:outline-none [&>p>select]:focus:ring-2 [&>p>select]:focus:ring-blue-500
+        
+        /* Textos de ayuda y errores */
+        [&>p>span.helptext]:block [&>p>span.helptext]:text-xs [&>p>span.helptext]:text-gray-500 [&>p>span.helptext]:mt-1
+        [&>ul.errorlist]:text-sm [&>ul.errorlist]:text-red-600 [&>ul.errorlist]:mb-4 [&>ul.errorlist]:p-3 [&>ul.errorlist]:bg-red-50 [&>ul.errorlist]:border [&>ul.errorlist]:border-red-200 [&>ul.errorlist]:rounded-md
+    ">
+        {% csrf_token %}
+        
+        {{ form.as_p }}
 
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
+        <div class="flex justify-end gap-3 mt-8 pt-5 border-t border-gray-100">
+            <!-- Botón de cancelar secundario -->
+            <a href="{% url 'dashboard' %}" 
+               class="px-5 py-2 bg-white border border-gray-300 rounded-md text-gray-700 font-medium hover:bg-gray-50 transition-colors">
+                Cancelar
+            </a>
+            <!-- Botón de guardar primario -->
+            <button type="submit" 
+                    class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-colors shadow-sm">
+                Guardar
+            </button>
+        </div>
+    </form>
 
-    <button class="btn btn-primary">Guardar</button>
-</form>
-
+</div>
 {% endblock %}

@@ -2,73 +2,86 @@
 
 {% block content %}
 
-<h2 class="mb-4">Mi Carrito</h2>
+<h2 class="text-2xl font-bold text-gray-800 mb-6">Mi Carrito</h2>
 
 {% if cart.cartitem_set.all %}
 
-<table class="table table-bordered align-middle">
-    <thead>
-        <tr>
-            <th>Producto</th>
-            <th>Precio</th>
-            <th>Cantidad</th>
-            <th>Subtotal</th>
-            <th></th>
-        </tr>
-    </thead>
+<!-- Contenedor principal de la tabla con bordes redondeados y scroll horizontal para móviles -->
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-6">
+    <div class="overflow-x-auto">
+        <!-- divide-y y divide-x simulan el table-bordered de Bootstrap -->
+        <table class="min-w-full divide-y divide-gray-200">
+            
+            <thead class="bg-gray-50">
+                <tr class="divide-x divide-gray-200">
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Producto</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Precio</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cantidad</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subtotal</th>
+                    <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                </tr>
+            </thead>
 
-    <tbody>
+            <tbody class="bg-white divide-y divide-gray-200">
+            {% for item in cart.cartitem_set.all %}
+                <tr class="hover:bg-gray-50 transition-colors divide-x divide-gray-200">
+                    
+                    <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
+                        {{ item.product.name }}
+                    </td>
+                    
+                    <td class="px-6 py-4 whitespace-nowrap text-gray-700">
+                        $ {{ item.product.price }}
+                    </td>
+                    
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <!-- El formulario usa flexbox para alinear el input y el botón ordenadamente -->
+                        <form method="POST" action="{% url 'update_cart_item' item.id %}" class="flex flex-col items-start gap-2">
+                            {% csrf_token %}
+                            <input type="number"
+                                   name="quantity"
+                                   value="{{ item.quantity }}"
+                                   min="1"
+                                   class="w-24 px-3 py-1.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm transition-colors">
 
-    {% for item in cart.cartitem_set.all %}
-        <tr>
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-md text-sm transition-colors">
+                                Actualizar
+                            </button>
+                        </form>
+                    </td>
+                    
+                    <td class="px-6 py-4 whitespace-nowrap font-semibold text-gray-900">
+                        $ {{ item.subtotal }}
+                    </td>
+                    
+                    <td class="px-6 py-4 whitespace-nowrap text-center">
+                        <a href="{% url 'remove_from_cart' item.id %}"
+                           class="inline-block bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-md text-sm transition-colors">
+                            Eliminar
+                        </a>
+                    </td>
+                    
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 
-            <td>{{ item.product.name }}</td>
-
-            <td>$ {{ item.product.price }}</td>
-
-            <td>
-                <form method="POST"
-                      action="{% url 'update_cart_item' item.id %}">
-                    {% csrf_token %}
-
-                    <input type="number"
-                           name="quantity"
-                           value="{{ item.quantity }}"
-                           min="1"
-                           class="form-control"
-                           style="width:90px;">
-
-                    <button class="btn btn-sm btn-primary mt-2">
-                        Actualizar
-                    </button>
-                </form>
-            </td>
-
-            <td>
-                $ {{ item.subtotal }}
-            </td>
-
-            <td>
-                <a href="{% url 'remove_from_cart' item.id %}"
-                   class="btn btn-danger btn-sm">
-                    Eliminar
-                </a>
-            </td>
-
-        </tr>
-    {% endfor %}
-
-    </tbody>
-</table>
-
-<div class="text-end">
-    <h3>Total: $ {{ cart.total }}</h3>
+<!-- Total alineado a la derecha -->
+<div class="flex justify-end">
+    <h3 class="text-xl font-bold text-gray-900 bg-gray-50 border border-gray-200 px-6 py-4 rounded-lg shadow-sm">
+        Total: <span class="text-blue-600">$ {{ cart.total }}</span>
+    </h3>
 </div>
 
 {% else %}
 
-<div class="alert alert-info">
-    Tu carrito está vacío
+<!-- Alerta estilo alert-info -->
+<div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-md shadow-sm">
+    <div class="flex items-center">
+        <p class="text-blue-700 font-medium m-0">Tu carrito está vacío</p>
+    </div>
 </div>
 
 {% endif %}

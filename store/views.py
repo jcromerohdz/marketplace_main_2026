@@ -50,7 +50,8 @@ def home(request):
 
     return render(request, 'store/home.html', {
         'page_obj': page_obj,
-        'categories': categories
+        'categories': categories,
+        'products': products
     })
 
 

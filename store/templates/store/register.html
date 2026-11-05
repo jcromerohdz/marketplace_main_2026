@@ -1,14 +1,30 @@
 {% extends 'store/base.html' %}
 
 {% block content %}
+<!-- Contenedor estilo tarjeta, ligeramente más ancho (max-w-md) porque los registros suelen tener más campos -->
+<div class="max-w-md mx-auto mt-10 p-6 bg-white border border-gray-200 rounded-lg shadow-md">
+    
+    <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Registro</h2>
 
-<h2>Registro</h2>
+    <!-- Magia de Tailwind: Selectores de hijos arbitrarios para dar estilo al HTML generado por Django -->
+    <form method="POST" class="
+        [&>p]:mb-4 
+        [&>p>label]:block [&>p>label]:text-sm [&>p>label]:font-medium [&>p>label]:text-gray-700 [&>p>label]:mb-1
+        [&>p>input]:w-full [&>p>input]:px-4 [&>p>input]:py-2 [&>p>input]:border [&>p>input]:border-gray-300 [&>p>input]:rounded-md [&>p>input]:focus:outline-none [&>p>input]:focus:ring-2 [&>p>input]:focus:ring-green-500 [&>p>input]:transition-colors
+        [&>p>select]:w-full [&>p>select]:px-4 [&>p>select]:py-2 [&>p>select]:border [&>p>select]:border-gray-300 [&>p>select]:rounded-md [&>p>select]:focus:outline-none [&>p>select]:focus:ring-2 [&>p>select]:focus:ring-green-500
+        [&>p>span.helptext]:block [&>p>span.helptext]:text-xs [&>p>span.helptext]:text-gray-500 [&>p>span.helptext]:mt-1
+        [&>ul.errorlist]:text-sm [&>ul.errorlist]:text-red-600 [&>ul.errorlist]:mb-4 [&>ul.errorlist]:p-3 [&>ul.errorlist]:bg-red-50 [&>ul.errorlist]:border [&>ul.errorlist]:border-red-200 [&>ul.errorlist]:rounded-md
+    ">
+        {% csrf_token %}
+        
+        <!-- Django renderiza los campos automáticamente aquí -->
+        {{ form.as_p }}
 
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
+        <button type="submit" 
+                class="w-full mt-2 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-md transition-colors">
+            Registrarse
+        </button>
+    </form>
 
-    <button class="btn btn-success">Registrarse</button>
-</form>
-
+</div>
 {% endblock %}
